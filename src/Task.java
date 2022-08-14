@@ -2,14 +2,14 @@ public class Task {
    private Integer id;
    private String name;
    private String description;
-   private String status;
+   private TaskStatus status;
 
    public Task(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        status = "Задача только создана, но к её выполнению ещё не приступили.";
-    }
+        status = TaskStatus.NEW;
+   }
 
     @Override
     public String toString() {
@@ -44,11 +44,11 @@ public class Task {
         this.description = description;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 }
