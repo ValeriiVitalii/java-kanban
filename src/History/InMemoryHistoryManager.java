@@ -1,3 +1,5 @@
+package History;
+import TasksClass.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +9,7 @@ public class InMemoryHistoryManager implements HistoryManager {
    static CustomLinkedList<Task> customLinkedList = new CustomLinkedList<>();
 
     @Override
-    public void add(Task task) {
+    public void addTask(Task task) {
         int id = task.getId();
         if (taskNode.containsKey(id)) {
             Node<Task> node = taskNode.get(id);

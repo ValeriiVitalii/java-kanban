@@ -1,4 +1,9 @@
+package TaskManagers;
+import TasksClass.Task;
+import TasksClass.Epic;
+import TasksClass.Subtask;
 import java.util.ArrayList;
+import TasksClass.TaskStatus;
 public interface TaskManager {
 
     void add(Task task);

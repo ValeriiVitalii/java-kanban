@@ -1,10 +1,13 @@
+package TasksClass;
 
 import java.util.ArrayList;
-public class Epic extends Task{
+public class Epic extends Task {
     private int idEpic = 1;
+    private String type;
     private final ArrayList<Subtask> subTask = new ArrayList<>();
     public Epic(Integer id, String name, String description) {
         super(id, name, description);
+        setType("Epic");
     }
     public int getIdEpic() {
         return idEpic;
