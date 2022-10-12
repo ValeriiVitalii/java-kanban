@@ -1,4 +1,4 @@
-
+/*
 import History.HistoryManager;
 import SaveCsv.FileBackedTasksManager;
 import TaskManagers.Manager;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 public class Main {
-   /* public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // "C:\\Users\\79650\\Desktop\\java важное\\TaskManager.csv"
         TaskManager manager = Manager.getDefault();
         HistoryManager history = Manager.getDefaultHistory();
@@ -72,21 +72,12 @@ public class Main {
         System.out.println("........................");
 
     }
-    public static void save() throws IOException {
-        try ( Writer fileWriter = new FileWriter(
-                , true)) {
 
 
-            fileWriter.write("ddd");
-            System.out.println("Запист успешно сохранена!");
-            ///toString
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-
-        }
-    }*/
+        }*/
 
 
 
 
-}
+
+

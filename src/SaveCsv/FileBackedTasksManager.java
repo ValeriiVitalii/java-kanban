@@ -20,7 +20,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
    public static void main(String[] args) throws IOException {
         FileBackedTasksManager manager = new FileBackedTasksManager(
                 ("C:\\Users\\79650\\Desktop\\java важное\\TaskManager.csv"));
-        Task task = new Task(1, "Valera1", "Vitalii1");
+        Task task = new Task(1, "Сходить в туалет", "Жестко покакать");
         Task task2 = new Task(2, "Valera2", "Vitalii2");
         Epic epic1 = new Epic(3, "Epic3", "Epic3");
         Subtask subtask1 = new Subtask(4, "Eldar4", "Eldar4", 3);
@@ -133,33 +133,36 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void add(Task task) {
+    public Task add(Task task) {
         super.add(task);
         try {
             this.task.put(task.getId(), task);
             save();
+            return task;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void add(Epic epic) {
+    public Epic add(Epic epic) {
         super.add(epic);
         try {
             this.epic.put(epic.getId(), epic);
             save();
+            return epic;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void add(Subtask subtask) {
+    public Subtask add(Subtask subtask) {
         super.add(subtask);
         try {
             this.subtask.put(subtask.getId(), subtask);
             save();
+            return subtask;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -183,5 +186,4 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 }
-
 

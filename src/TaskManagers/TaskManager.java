@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import TasksClass.TaskStatus;
 public interface TaskManager {
 
-    void add(Task task);
+    Task add(Task task);
 
-    void add(Epic epic);
+    Epic add(Epic epic);
 
-    void add(Subtask subtask);
+    Subtask add(Subtask subtask);
     ArrayList getArrayTask();
 
     ArrayList getArrayEpic();
