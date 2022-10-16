@@ -1,40 +1,42 @@
 package TaskManagers;
-import TasksClass.Task;
+
 import TasksClass.Epic;
 import TasksClass.Subtask;
-import java.util.ArrayList;
+import TasksClass.Task;
 import TasksClass.TaskStatus;
+
+import java.util.ArrayList;
 public interface TaskManager {
 
-    Task add(Task task);
+    int add(Task task);
 
-    Epic add(Epic epic);
+    int add(Epic epic);
 
-    Subtask add(Subtask subtask);
-    ArrayList getArrayTask();
+    int add(Subtask subtask);
+    ArrayList getListTask();
 
-    ArrayList getArrayEpic();
+    ArrayList getListEpic();
 
-    ArrayList getArraySubtask();
+    ArrayList getListSubtask();
 
-    ArrayList getArraySubtasksOfAnEpic(int idEpic);
+    ArrayList getListSubtasksOfAnEpic(int idEpic);
 
-    void deleteArrayTask();
+    void removeListTask();
 
-    void deleteArrayEpic();
+    void removeListEpic();
 
-    void deleteArraySubtask();
+    void removeListSubtask();
 
     Task getTask(Integer idTask);
     Epic getEpic(Integer idEpic);
 
     Subtask getSubtask(Integer idSubtask);
 
-    void deleteSpecificTask(Integer idTask);
+    void removeSpecificTask(Integer idTask);
 
-    void deleteSpecificEpic(Integer idEpic);
+    void removeSpecificEpic(Integer idEpic);
 
-    void deleteSpecificSubtask(Integer idSubtask);
+    void removeSpecificSubtask(Integer idSubtask);
     void udpate(Task task);
 
     void udpate(Epic epic);

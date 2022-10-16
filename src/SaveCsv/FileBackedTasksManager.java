@@ -133,36 +133,36 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task add(Task task) {
+    public int add(Task task) {
         super.add(task);
         try {
             this.task.put(task.getId(), task);
             save();
-            return task;
+            return task.getId();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Epic add(Epic epic) {
+    public int add(Epic epic) {
         super.add(epic);
         try {
             this.epic.put(epic.getId(), epic);
             save();
-            return epic;
+            return epic.getId();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Subtask add(Subtask subtask) {
+    public int add(Subtask subtask) {
         super.add(subtask);
         try {
             this.subtask.put(subtask.getId(), subtask);
             save();
-            return subtask;
+            return subtask.getId();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
