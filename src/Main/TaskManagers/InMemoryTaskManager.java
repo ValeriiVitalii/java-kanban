@@ -6,14 +6,27 @@ import TasksClass.Subtask;
 import TasksClass.Task;
 import TasksClass.TaskStatus;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id = 1;
-    private static final HashMap<Integer, Task> task = new HashMap<>();
-    private static final HashMap<Integer, Epic> epic = new HashMap<>();
-    private static final HashMap<Integer, Subtask> subtask = new HashMap<>();
+    private HashMap<Integer, Task> task = new HashMap<>();
+    private HashMap<Integer, Epic> epic = new HashMap<>();
+    private HashMap<Integer, Subtask> subtask = new HashMap<>();
+
+    protected Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
+        if (o1.getStartTimeLocal() == null && o2.getStartTimeLocal() == null) return o1.getId() - o2.getId();
+        if (o1.getStartTimeLocal() == null) return 1;
+        if (o2.getStartTimeLocal() == null) return -1;
+        if (o1.getStartTimeLocal().isAfter(o2.getStartTimeLocal())) return 1;
+        if (o1.getStartTimeLocal().isBefore(o2.getStartTimeLocal())) return -1;
+        if (o1.getStartTimeLocal().isEqual(o2.getStartTimeLocal())) return o1.getId() - o2.getId();
+        return 0;
+    });
 
     HistoryManager historyManager = Manager.getDefaultHistory();
 
@@ -21,6 +34,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int add(Task task) {
         task.setId(id);
         this.task.put(id, task);
+        prioritizedTasks.add(task);
         return id++;
     }
 
@@ -28,6 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int add(Epic epic) {
         epic.setId(id);
         this.epic.put(id, epic);
+        prioritizedTasks.add(epic);
         return id++;
     }
 
@@ -37,6 +52,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.get(subtask.getIdEpic()).setSubtask(subtask);
         this.subtask.put(id, subtask);
         updateStatusEpic(subtask.getIdEpic());
+        prioritizedTasks.add(subtask);
         return id++;
         }
 
@@ -111,16 +127,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeSpecificTask(Integer id) {
+        prioritizedTasks.remove(task.get(id));
         task.remove(id);
     }
 
     @Override
     public void removeSpecificEpic(Integer idEpic) {
+        prioritizedTasks.remove(epic.get(idEpic));
         epic.remove(idEpic);
     }
 
     @Override
     public void removeSpecificSubtask(Integer idSubtask) {
+        prioritizedTasks.remove(subtask.get(idSubtask));
         subtask.remove(id);
     }
 
@@ -158,6 +177,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public String getEndTime(int id) {
+        if (task.containsKey(id)) {
+           return task.get(id).getEndTime();
+        }
+        if (epic.containsKey(id)) {
+            return epic.get(id).getEndTime();
+        }
+        if (subtask.containsKey(id)) {
+            return subtask.get(id).getEndTime();
+        } else {
+            return "Задача не найдена!";
+        }
+    }
+    @Override
     public void updateStatusEpic(int idEpic) {
         ArrayList<Subtask> subtasks = getListSubtasksOfAnEpic(idEpic);
         int doneSubtask = 0;
@@ -181,5 +214,29 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        intersectionCheck();
+        return prioritizedTasks;
+    }
 
+    @Override
+    public void intersectionCheck() {
+        LocalDateTime checkTime = null;
+        boolean flagCheckTimeIsEmpty = true;
+        for (Task task : prioritizedTasks) {
+            if (flagCheckTimeIsEmpty) {
+                checkTime = task.getEndLocalDateTime();
+                flagCheckTimeIsEmpty = false;
+            } else if (task.getStartTimeLocal() != null) {
+                if (task.getStartTimeLocal().isBefore(checkTime)) {
+                    System.out.println("Найдено пересечение времени задач, проверьте корректность данных");
+                    return;
+                }
+                if (task.getStartTimeLocal().isAfter(checkTime) || task.getStartTimeLocal().isEqual(checkTime)) {
+                    checkTime = task.getEndLocalDateTime();
+                }
+            }
+        }
+    }
 }

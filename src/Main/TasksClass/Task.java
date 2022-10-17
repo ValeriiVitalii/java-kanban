@@ -1,5 +1,8 @@
 package TasksClass;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Task {
    private Integer id;
@@ -8,15 +11,24 @@ public class Task {
    private TaskStatus status;
    private String type;
 
+   private String startTime;
+   private long duration;
+
    private int idEpic = 0;
 
-   public Task(Integer id, String name, String description) {
+   public Task(Integer id, String name, String description, String startTime, long duration) {
         this.id = id;
         this.name = name;
         this.description = description;
         status = TaskStatus.NEW;
         setType("Task");
+
+        this.startTime = startTime;
+        this.duration = duration;
+
    }
+
+
 
     @Override
     public String toString() {
@@ -73,6 +85,41 @@ public class Task {
 
     public void setIdEpic(int idEpic) {
         this.idEpic = idEpic;
+    }
+
+    public LocalDateTime getStartTimeLocal() {
+        return LocalDateTime.parse(startTime);
+    }
+
+    public String getStartTimeString() {
+        return startTime;
+    }
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public String getEndTime() {
+       LocalDateTime endTime = getStartTimeLocal().plusMinutes(duration);
+       DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+       return endTime.format(format);
+    }
+
+    public LocalDateTime getEndLocalDateTime() {
+        LocalDateTime endTime = getStartTimeLocal().plusMinutes(duration);
+        return endTime;
+    }
+
+    public int getSecond() {
+        Instant a = Instant.parse(startTime);
+        return (int) a.toEpochMilli();
     }
 }
 

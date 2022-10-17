@@ -6,6 +6,8 @@ import TasksClass.Task;
 import TasksClass.TaskStatus;
 
 import java.util.ArrayList;
+import java.util.Set;
+
 public interface TaskManager {
 
     int add(Task task);
@@ -49,5 +51,11 @@ public interface TaskManager {
     void setStatusSubtask(int idSubtask, TaskStatus status);
 
     void updateStatusEpic(int idEpic);
+
+    Set<Task> getPrioritizedTasks();
+
+    void intersectionCheck();
+
+    String getEndTime(int id);
 }
 

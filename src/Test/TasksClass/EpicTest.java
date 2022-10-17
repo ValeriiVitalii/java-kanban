@@ -1,6 +1,5 @@
-import TasksClass.Epic;
-import TasksClass.Subtask;
-import TasksClass.TaskStatus;
+package TasksClass;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,11 +9,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class EpicTest {
-    private static Epic epicTest = new Epic(1,"ЭпикТест №1", "ЭпикПроверка 1");
-    private static Subtask subtaskTest = new Subtask(1, "СубТест1", "СубПроверка1", 1);
-    private static Subtask subtaskTest2 = new Subtask(2, "СубюТест2", "СубПроверка2", 1);
-    private static Subtask subtaskTest3 = new Subtask(3, "СубТест3", "СубПроверка3", 1);
-    private static Subtask subtaskTest4 = new Subtask(4, "СубТест4", "СубПроверка4", 1);
+    private static Epic epicTest = new Epic(1,"ЭпикТест №1", "ЭпикПроверка 1",
+            "2021-11-22T16:22:10", 44);
+    private static Subtask subtaskTest = new Subtask(1, "СубТест1", "СубПроверка1", 1,
+            "2021-11-22T16:22:10", 44);
+    private static Subtask subtaskTest2 = new Subtask(2, "СубюТест2", "СубПроверка2", 1,
+            "2021-11-22T16:22:10", 44);
+    private static Subtask subtaskTest3 = new Subtask(3, "СубТест3", "СубПроверка3", 1,
+            "2021-11-22T16:22:10", 44);
+    private static Subtask subtaskTest4 = new Subtask(4, "СубТест4", "СубПроверка4", 1,
+            "2021-11-22T16:22:10", 44);
 
 
     @Test

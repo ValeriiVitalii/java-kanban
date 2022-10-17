@@ -1,6 +1,5 @@
 package SaveCsv;
 
-import java.io.File;
 import java.io.IOException;
 
 public class ManagerSaveException extends IOException {

@@ -1,16 +1,18 @@
 package SaveCsv;
 
-import TaskManagers.InMemoryTaskManager;
 import History.HistoryManager;
+import TaskManagers.InMemoryTaskManager;
 import TaskManagers.Manager;
 import TasksClass.Epic;
 import TasksClass.Subtask;
 import TasksClass.Task;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +20,15 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
    public static void main(String[] args) throws IOException {
-        FileBackedTasksManager manager = new FileBackedTasksManager(
-                ("C:\\Users\\79650\\Desktop\\java важное\\TaskManager.csv"));
-        Task task = new Task(1, "Сходить в туалет", "Жестко покакать");
-        Task task2 = new Task(2, "Valera2", "Vitalii2");
-        Epic epic1 = new Epic(3, "Epic3", "Epic3");
-        Subtask subtask1 = new Subtask(4, "Eldar4", "Eldar4", 3);
+        FileBackedTasksManager manager = new FileBackedTasksManager();
+        Task task = new Task(1, "Сходить в туалет", "Жестко покакать",
+                "2021-11-22T16:22:10", 44);
+        Task task2 = new Task(2, "Valera2", "Vitalii2",
+                "2021-11-22T16:22:10", 44);
+        Epic epic1 = new Epic(3, "Epic3", "Epic3",
+                "2021-11-22T16:22:10", 44);
+        Subtask subtask1 = new Subtask(4, "Eldar4", "Eldar4", 3,
+                "2021-11-22T16:22:10", 44);
         manager.add(task);
         manager.add(task2);
         manager.add(epic1);
@@ -44,18 +49,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     }
 
-    public static final HashMap<Integer, Task> task = new HashMap<>();
-    private static final HashMap<Integer, Epic> epic = new HashMap<>();
-    private static final HashMap<Integer, Subtask> subtask = new HashMap<>();
+    private HashMap<Integer, Task> task = new HashMap<>();
+    private HashMap<Integer, Epic> epic = new HashMap<>();
+    private HashMap<Integer, Subtask> subtask = new HashMap<>();
     static HistoryManager historyManager = Manager.getDefaultHistory();
-    static Path path;
 
-    public FileBackedTasksManager(String path) {
-    this.path = Paths.get(path);
-    }
+    private static final String PATH = "C:\\Users\\79650\\Desktop\\java важное\\TaskManager.csv";
 
     public void save() throws IOException {
-        try (Writer fileWriter = new FileWriter(path.toString()))  {
+        try (Writer fileWriter = new FileWriter(PATH))  {
             for (Task task : task.values()) {
                 fileWriter.write(toString(task));
             }
@@ -74,8 +76,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
     public static String toString(Task task) {
-        return task.getId() + "," + task.getType() + ","  + task.getName() + ","
-                   + task.getStatus() + "," + task.getDescription() + "," + task.getIdEpic() + "," + "\n";
+        return task.getId() + "," + task.getType() + "," + task.getName() + ","
+                   + task.getStatus() + "," + task.getDescription() + "," + task.getIdEpic() + "," +
+                task.getStartTimeString() + "," + task.getDuration() + "," + "\n";
     }
 
     public static String historyToString(HistoryManager manager)  {
@@ -87,19 +90,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return id;
     }
 
-    public static Task fromString(String value)  {
+    public static String[] fromString(String value)  {
         String[] taskString = value.split(",");
-        if (taskString[1].contains("Task")) {
-        return new Task(Integer.valueOf(taskString[0]), taskString[2], taskString[4]);
+        return taskString;
         }
-        if (taskString[1].contains("Epic")) {
-            return new Epic(Integer.valueOf(taskString[0]), taskString[2], taskString[4]);
-        }
-        else {
-            return new Subtask(Integer.valueOf(taskString[0]), taskString[2],
-                    taskString[4],Integer.valueOf(taskString[5]));
-        }
-    }
 
     public static List<Integer> historyFromString(String value) {
         List<Integer> idHistory = new ArrayList<>();
@@ -111,26 +105,41 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTasksManager loadFromFile() throws IOException  {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path.toString());
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
         try {
-            String[] lines = Files.readString(Path.of(path.toString()), StandardCharsets.UTF_8).split(System.lineSeparator());
+            String[] lines = Files.readString(Path.of(PATH)).split("\n");
             for (int i = 0; i < lines.length; i++) {
                 String line = lines[i];
-                    if (line.contains("Task") || line.contains("Epic") || line.contains("Subtask")) {
-                        fileBackedTasksManager.add(fromString(line));
+
+                if (line.contains("Task") || line.contains("Epic") || line.contains("Subtask")) {
+                    String[] lineTask = fromString(line);
+                    if (lineTask[1].contains("Task")) {
+                        fileBackedTasksManager.add(new Task(Integer.valueOf(lineTask[0]), lineTask[2], lineTask[4],
+                                lineTask[6], Long.valueOf(lineTask[7])));
                     }
-                if (i != 0 && line.length() > 0 && lines[i - 1].contains("")) {
-                    List<Integer> idHistory = historyFromString(line);
-                    for (Integer id : idHistory) {
-                        fileBackedTasksManager.getTaskOrEpicOrSubtask(id);
+                    if (lineTask[1].contains("Epic")) {
+                        fileBackedTasksManager.add(new Epic(Integer.valueOf(lineTask[0]), lineTask[2], lineTask[4],
+                                lineTask[6], Long.valueOf(lineTask[7])));
+                    }
+                    if (lineTask[1].contains("Subtask")) {
+                        fileBackedTasksManager.add(new Subtask(Integer.valueOf(lineTask[0]), lineTask[2],
+                                lineTask[4], Integer.valueOf(lineTask[5]),
+                                lineTask[6], Long.valueOf(lineTask[7])));
                     }
                 }
+                    if (i != 0 && line.length() > 0 && lines[i - 1].contains("") &&
+                            !(line.contains("Task")) && !(line.contains("Epic")) && !(line.contains("Subtask"))) {
+                        List<Integer> idHistory = historyFromString(line);
+                        for (Integer id : idHistory) {
+                            fileBackedTasksManager.getTaskOrEpicOrSubtask(id);
+                        }
+                    }
+                }
+            }       catch (IOException e) {
+                throw new ManagerSaveException("Ошибка данных");
             }
-        }       catch (IOException e) {
-            throw new ManagerSaveException("Ошибка данных");
+            return fileBackedTasksManager;
         }
-        return fileBackedTasksManager;
-    }
 
     @Override
     public int add(Task task) {

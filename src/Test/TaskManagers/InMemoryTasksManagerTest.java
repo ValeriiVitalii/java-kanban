@@ -1,4 +1,5 @@
-import TaskManagers.InMemoryTaskManager;
+package TaskManagers;
+
 import TasksClass.Epic;
 import TasksClass.Subtask;
 import TasksClass.Task;
@@ -10,7 +11,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
+public class
+InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Override
     public InMemoryTaskManager createManager() {
@@ -20,7 +22,8 @@ public class InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManage
     @Override
     @Test
     public void addTaskAndGetTaskByIdTest() {
-        Task taskTest = new Task(1,"ТаскТест №1", "ТаскПроверка 1");
+        Task taskTest = new Task(1,"ТаскТест №1", "ТаскПроверка 1",
+                "2022-10-20T10:10:10", 50);
         InMemoryTaskManager taskManager = createManager();
         int id = taskManager.add(taskTest);
         Task task = taskManager.getTask(id);
@@ -32,12 +35,15 @@ public class InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManage
 
         assertNotNull(listTask, "Список задач не найден!");
         assertEquals(1, listTask.size(), "Неверное количество задач.");
+
+        assertEquals(task.getEndTime(), "20.10.2022, 11:00", "Время не совпадает!");
     }
 
     @Override
     @Test
     public void addEpicAndGetEpicByIdTest() {
-        Epic epicTest = new Epic(1,"ЭпикТест №1", "ЭпикПроверка 1");
+        Epic epicTest = new Epic(1,"ЭпикТест №1", "ЭпикПроверка 1",
+                "2021-11-22T16:22:10", 44);
         InMemoryTaskManager taskManager = createManager();
         int idEpic = taskManager.add(epicTest);
         Epic epic = taskManager.getEpic(idEpic);
@@ -48,23 +54,29 @@ public class InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManage
         List<Epic> listEpic = taskManager.getListEpic();
 
         assertNotNull(listEpic, "Список задач не найден!");
-        assertEquals(2, listEpic.size(), "Неверное количество задач.");
+        assertEquals(1, listEpic.size(), "Неверное количество задач.");
 
-        Subtask subtaskTest = new Subtask(1, "СубтаскТест №1", "СубтаскПроверка 1", 1);
+        Subtask subtaskTest = new Subtask(2, "СубтаскТест №1", "СубтаскПроверка 1", 1,
+                "2021-11-22T16:22:10", 44);
         int idSubtask = taskManager.add(subtaskTest);
-      //  taskManager.setStatusSubtask(1, TaskStatus.DONE);
-        subtaskTest.setStatus(TaskStatus.IN_PROGRESS);
+        taskManager.setStatusSubtask(2, TaskStatus.IN_PROGRESS);
 
         assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Статус Эпика не верный!");
+
+        taskManager.setStatusSubtask(2, TaskStatus.DONE);
+
+        assertEquals(epic.getStatus(), TaskStatus.DONE, "Статус Эпика не верный!");
     }
 
     @Override
     @Test
     public void addSubtaskAndGetSubtaskIdTest() {
-        Epic epicTest = new Epic(1,"ЭпикТест №1", "ЭпикПроверка 1");
+        Epic epicTest = new Epic(1,"ЭпикТест №1", "ЭпикПроверка 1",
+                "2021-11-22T16:22:10", 44);
         InMemoryTaskManager taskManager = createManager();
         int idEpic = taskManager.add(epicTest);
-        Subtask subtaskTest = new Subtask(1,"СубтаскТест №1", "СубтаскПроверка 1", 1);
+        Subtask subtaskTest = new Subtask(2,"СубтаскТест №1", "СубтаскПроверка 1", 1,
+                "2021-11-22T16:22:10", 44);
         int idSubtask = taskManager.add(subtaskTest);
         Subtask subtask = taskManager.getSubtask(idSubtask);
 
@@ -76,5 +88,4 @@ public class InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManage
         assertNotNull(listSubtask, "Список задач не найден!");
         assertEquals(1, listSubtask.size(), "Неверное количество задач.");
     }
-
 }
