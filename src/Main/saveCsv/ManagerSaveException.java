@@ -1,4 +1,4 @@
-package SaveCsv;
+package saveCsv;
 
 import java.io.IOException;
 

@@ -1,10 +1,10 @@
-package TaskManagers;
+package taskManagers;
 
-import History.HistoryManager;
-import TasksClass.Epic;
-import TasksClass.Subtask;
-import TasksClass.Task;
-import TasksClass.TaskStatus;
+import history.HistoryManager;
+import tasksClass.Epic;
+import tasksClass.Subtask;
+import tasksClass.Task;
+import tasksClass.TaskStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

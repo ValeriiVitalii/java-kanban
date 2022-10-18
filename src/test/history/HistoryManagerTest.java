@@ -1,9 +1,9 @@
-package History;
+package history;
 
-import TaskManagers.InMemoryTaskManager;
-import TasksClass.Epic;
-import TasksClass.Subtask;
-import TasksClass.Task;
+import taskManagers.InMemoryTaskManager;
+import tasksClass.Epic;
+import tasksClass.Subtask;
+import tasksClass.Task;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

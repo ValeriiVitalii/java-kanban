@@ -1,9 +1,9 @@
-package TaskManagers;
+package taskManagers;
 
-import TasksClass.Epic;
-import TasksClass.Subtask;
-import TasksClass.Task;
-import TasksClass.TaskStatus;
+import tasksClass.Epic;
+import tasksClass.Subtask;
+import tasksClass.Task;
+import tasksClass.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

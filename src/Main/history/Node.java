@@ -1,4 +1,4 @@
-package History;
+package history;
 
 public class Node<E> {
 E item;

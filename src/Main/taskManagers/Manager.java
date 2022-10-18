@@ -1,7 +1,7 @@
-package TaskManagers;
+package taskManagers;
 
-import History.HistoryManager;
-import History.InMemoryHistoryManager;
+import history.HistoryManager;
+import history.InMemoryHistoryManager;
 
 public interface Manager {
 

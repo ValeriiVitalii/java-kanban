@@ -1,11 +1,11 @@
-package SaveCsv;
+package saveCsv;
 
-import History.HistoryManager;
-import TaskManagers.InMemoryTaskManager;
-import TaskManagers.Manager;
-import TasksClass.Epic;
-import TasksClass.Subtask;
-import TasksClass.Task;
+import history.HistoryManager;
+import taskManagers.InMemoryTaskManager;
+import taskManagers.Manager;
+import tasksClass.Epic;
+import tasksClass.Subtask;
+import tasksClass.Task;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;

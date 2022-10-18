@@ -1,4 +1,4 @@
-package History;
+package history;
 
 public class CustomLinkedList<E> {
     public Node<E> node;

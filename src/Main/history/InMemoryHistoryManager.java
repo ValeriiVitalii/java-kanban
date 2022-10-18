@@ -1,5 +1,5 @@
-package History;
-import TasksClass.Task;
+package history;
+import tasksClass.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 

@@ -1,15 +1,15 @@
-package SaveCsv;
+package saveCsv;
 
-import TaskManagers.TaskManagerTest;
-import TasksClass.Epic;
-import TasksClass.Subtask;
-import TasksClass.Task;
+import taskManagers.TaskManagerTest;
+import tasksClass.Epic;
+import tasksClass.Subtask;
+import tasksClass.Task;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-import static SaveCsv.FileBackedTasksManager.loadFromFile;
+import static saveCsv.FileBackedTasksManager.loadFromFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
