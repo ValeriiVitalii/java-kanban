@@ -43,9 +43,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         ArrayList<Subtask> arrayList = taskManager.getListSubtasksOfAnEpic(2);
         String name = arrayList.get(0).getName();
 
-        assertEquals(1, taskManager.getListTask().size(), "Неверное количество задач.");
-        assertEquals(1, taskManager.getListEpic().size(), "Неверное количество эпиков.");
-        assertEquals(1, taskManager.getListSubtask().size(), "Неверное количество подзадач.");
+        assertEquals(1, taskManager.getMapTask().size(), "Неверное количество задач.");
+        assertEquals(1, taskManager.getMapEpic().size(), "Неверное количество эпиков.");
+        assertEquals(1, taskManager.getMapSubtask().size(), "Неверное количество подзадач.");
         assertEquals("СубтаскТест №1", name, "Подзадачи не находит по эпику");
         assertEquals(taskTest, taskManager.getTask(1), "Задачи не совпадают!");
         assertEquals(epicTest, taskManager.getEpic(2), "Эпики не совпадают!");
@@ -69,9 +69,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.removeListTask();
         taskManager.removeListEpic();
         taskManager.removeListSubtask();
-        assertTrue(taskManager.getListTask().isEmpty(), "Лист с Тасками не удален!");
-        assertTrue(taskManager.getListEpic().isEmpty(), "Лист с Эпиками не удален!");
-        assertTrue(taskManager.getListSubtask().isEmpty(), "Лист с Подзадачами не удален!");
+        assertTrue(taskManager.getMapTask().isEmpty(), "Лист с Тасками не удален!");
+        assertTrue(taskManager.getMapEpic().isEmpty(), "Лист с Эпиками не удален!");
+        assertTrue(taskManager.getMapSubtask().isEmpty(), "Лист с Подзадачами не удален!");
     }
 
     @Test
@@ -115,11 +115,13 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.add(epicTest);
         taskManager.add(subtaskTest);
         taskManager.add(subtaskTest2);
+        taskManager.removeSpecificSubtask(3);
         ArrayList<Task> prioritizedTasksTest = new ArrayList<>();
         prioritizedTasksTest.add(taskTest);
         prioritizedTasksTest.add(epicTest);
         prioritizedTasksTest.add(subtaskTest);
         prioritizedTasksTest.add(subtaskTest2);
+        prioritizedTasksTest.remove(3);
         Set<Task> setprioritizedTasksTest = taskManager.getPrioritizedTasks();
 
         assertEquals(4, setprioritizedTasksTest.size(), "Неправильный размер списка задач!");

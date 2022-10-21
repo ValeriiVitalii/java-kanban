@@ -6,6 +6,7 @@ import tasksClass.Task;
 import tasksClass.TaskStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public interface TaskManager {
@@ -15,11 +16,11 @@ public interface TaskManager {
     int add(Epic epic);
 
     int add(Subtask subtask);
-    ArrayList getListTask();
+    HashMap getMapTask();
 
-    ArrayList getListEpic();
+    HashMap getMapEpic();
 
-    ArrayList getListSubtask();
+    HashMap getMapSubtask();
 
     ArrayList getListSubtasksOfAnEpic(int idEpic);
 

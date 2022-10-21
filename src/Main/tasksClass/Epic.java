@@ -3,21 +3,14 @@ package tasksClass;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
+
 public class Epic extends Task {
-    private int idEpic = 1;
-    private String type;
     private final ArrayList<Subtask> subTask = new ArrayList<>();
     public Epic(Integer id, String name, String description, String startTime, long duration) {
         super(id, name, description, startTime, duration);
         setType("Epic");
     }
-    public int getIdEpic() {
-        return idEpic;
-    }
-    public void setIdEpic(int idEpic) {
-        this.idEpic = idEpic;
-    }
-
     public ArrayList<Subtask> getSubtask() {
         return subTask;
     }
@@ -50,5 +43,31 @@ public class Epic extends Task {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
             return endTime.format(format);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", type=" + type +
+                ", title='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Epic epic = (Epic) o;
+        return Objects.equals(subTask, epic.subTask);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, name, description, status, duration, startTime);
     }
 }

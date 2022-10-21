@@ -21,7 +21,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
    public static void main(String[] args) throws IOException {
         FileBackedTasksManager manager = new FileBackedTasksManager();
-        Task task = new Task(1, "Сходить в туалет", "Жестко покакать",
+        Task task = new Task(1, "Умыться", "Почистить зубы",
                 "2021-11-22T16:22:10", 44);
         Task task2 = new Task(2, "Valera2", "Vitalii2",
                 "2021-11-22T16:22:10", 44);
@@ -49,9 +49,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     }
 
-    private HashMap<Integer, Task> task = new HashMap<>();
-    private HashMap<Integer, Epic> epic = new HashMap<>();
-    private HashMap<Integer, Subtask> subtask = new HashMap<>();
+    protected HashMap<Integer, Task> task = new HashMap<>();
+    protected HashMap<Integer, Epic> epic = new HashMap<>();
+    protected HashMap<Integer, Subtask> subtask = new HashMap<>();
+    protected HashMap<Integer, Task> allTasks = new HashMap<>();
     static HistoryManager historyManager = Manager.getDefaultHistory();
 
     private static final String PATH = "C:\\Users\\79650\\Desktop\\java важное\\TaskManager.csv";
@@ -84,6 +85,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public static String historyToString(HistoryManager manager)  {
         String id = "";
         ArrayList<Task> tasks = manager.getHistory();
+        for (Task task : tasks) {
+            id = id + String.valueOf(task.getId()) + ",";
+        }
+        return id;
+    }
+
+    public static String historyToString()  {
+        String id = "";
+        ArrayList<Task> tasks = historyManager.getHistory();
         for (Task task : tasks) {
             id = id + String.valueOf(task.getId()) + ",";
         }
@@ -146,6 +156,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         super.add(task);
         try {
             this.task.put(task.getId(), task);
+            allTasks.put(task.getId(), task);
             save();
             return task.getId();
         } catch (IOException e) {
@@ -158,6 +169,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         super.add(epic);
         try {
             this.epic.put(epic.getId(), epic);
+            allTasks.put(epic.getId(), epic);
             save();
             return epic.getId();
         } catch (IOException e) {
@@ -170,6 +182,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         super.add(subtask);
         try {
             this.subtask.put(subtask.getId(), subtask);
+            allTasks.put(subtask.getId(), subtask);
             save();
             return subtask.getId();
         } catch (IOException e) {
@@ -177,6 +190,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
+    @Override
+    public void removeSpecificSubtask(Integer idSubtask) {
+        try {
+            super.removeSpecificSubtask(idSubtask);
+            subtasks.remove(idSubtask);
+            save();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     public void getTaskOrEpicOrSubtask(Integer id) {
         try {
@@ -194,5 +218,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             throw new RuntimeException(e);
         }
     }
+
+    public HashMap<Integer, Task> getAllTasks() {
+        return allTasks;
+    }
+    public ArrayList<Task> getHistory() {
+        return historyManager.getHistory();
+    }
+
 }
 

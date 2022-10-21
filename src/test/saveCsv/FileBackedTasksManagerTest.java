@@ -1,17 +1,17 @@
 package saveCsv;
 
+import org.junit.jupiter.api.Test;
 import taskManagers.TaskManagerTest;
 import tasksClass.Epic;
 import tasksClass.Subtask;
 import tasksClass.Task;
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
-import static saveCsv.FileBackedTasksManager.loadFromFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static saveCsv.FileBackedTasksManager.loadFromFile;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
@@ -32,10 +32,10 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         assertNotNull(task, "Задача не найдена!");
         assertEquals(task, taskTest, "Задачи не совпадают!");
 
-        List<Task> listTask = taskManager.getListTask();
+        Map<Integer, Task> mapTask = taskManager.getMapTask();
 
-        assertNotNull(listTask, "Список задач не найден!");
-        assertEquals(1, listTask.size(), "Неверное количество задач.");
+        assertNotNull(mapTask, "Список задач не найден!");
+        assertEquals(1, mapTask.size(), "Неверное количество задач.");
     }
 
     @Override

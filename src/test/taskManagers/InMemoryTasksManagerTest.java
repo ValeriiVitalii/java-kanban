@@ -7,6 +7,7 @@ import tasksClass.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,10 +32,10 @@ InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertNotNull(task, "Задача не найдена!");
         assertEquals(task, taskTest, "Задачи не совпадают!");
 
-        List<Task> listTask = taskManager.getListTask();
+        Map<Integer,Task> mapTask = taskManager.getMapTask();
 
-        assertNotNull(listTask, "Список задач не найден!");
-        assertEquals(1, listTask.size(), "Неверное количество задач.");
+        assertNotNull(mapTask, "Список задач не найден!");
+        assertEquals(1, mapTask.size(), "Неверное количество задач.");
 
         assertEquals(task.getEndTime(), "20.10.2022, 11:00", "Время не совпадает!");
     }
@@ -51,10 +52,10 @@ InMemoryTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertNotNull(epic, "Задача не найдена!");
         assertEquals(epic, epicTest, "Задачи не совпадают!");
 
-        List<Epic> listEpic = taskManager.getListEpic();
+        Map<Integer, Epic> mapEpic = taskManager.getMapEpic();
 
-        assertNotNull(listEpic, "Список задач не найден!");
-        assertEquals(1, listEpic.size(), "Неверное количество задач.");
+        assertNotNull(mapEpic, "Список задач не найден!");
+        assertEquals(1, mapEpic.size(), "Неверное количество задач.");
 
         Subtask subtaskTest = new Subtask(2, "СубтаскТест №1", "СубтаскПроверка 1", 1,
                 "2021-11-22T16:22:10", 44);

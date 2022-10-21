@@ -1,9 +1,10 @@
-package kvServer;
+package api;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +28,36 @@ public class KVServer {
         server.createContext("/load", this::load);
     }
 
-    private void load(HttpExchange h) {
-        // TODO Добавьте получение значения по ключу
+    private void load(HttpExchange h) throws IOException {
+        try {
+            System.out.println("\n/load");
+            if (!hasAuth(h)) {
+                System.out.println("Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи ключа");
+                h.sendResponseHeaders(403, 0);
+                return;
+            }
+            if ("GET".equals(h.getRequestMethod())) {
+                String key = h.getRequestURI().getPath().substring("/load/".length());
+                if (key.isEmpty()) {
+                    System.out.println("Key для загрузки пустой. key указывается в пути: /load/{key}");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                String response = data.get(key);
+                if (response.isEmpty()) {
+                    System.out.println("Value для отправки пустой.");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                h.sendResponseHeaders(200, 0);
+
+                try (OutputStream os = h.getResponseBody()) {
+                    os.write(response.getBytes());
+                }
+            }
+        } finally {
+            h.close();
+        }
     }
 
     private void save(HttpExchange h) throws IOException {
@@ -85,6 +114,11 @@ public class KVServer {
         server.start();
     }
 
+    public void stop() {
+        System.out.println("Сервер остановлен");
+        server.stop(0);
+    }
+
     private String generateApiToken() {
         return "" + System.currentTimeMillis();
     }
@@ -105,8 +139,5 @@ public class KVServer {
         h.getResponseBody().write(resp);
     }
 
-    public void stop() {
-        System.out.println("Сервер остановлен");
-        server.stop(0);
-    }
+
 }

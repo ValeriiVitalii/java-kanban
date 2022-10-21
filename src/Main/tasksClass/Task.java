@@ -3,20 +3,19 @@ package tasksClass;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Task {
-   private Integer id;
-   private String name;
-   private String description;
-   private TaskStatus status;
-   private String type;
 
-   private String startTime;
-   private long duration;
-
-   private int idEpic = 0;
-
-   public Task(Integer id, String name, String description, String startTime, long duration) {
+    protected Integer id;
+    protected String name;
+    protected String description;
+    protected TaskStatus status;
+    protected String type;
+    protected String startTime;
+    protected long duration;
+    protected int idEpic = 1;
+    public Task(Integer id, String name, String description, String startTime, long duration) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,16 +28,35 @@ public class Task {
    }
 
 
-
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", title='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", status=" + status +
-                ", description=" + description +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) && Objects.equals(duration, task.duration)
+                && Objects.equals(type, task.type) && Objects.equals(name, task.name)
+                && Objects.equals(description, task.description) &&
+                status == task.status && Objects.equals(startTime, task.startTime) && idEpic == task.idEpic;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, name, description, status, duration, startTime, idEpic);
+    }
+
     public Integer getId() {
         return id;
     }
