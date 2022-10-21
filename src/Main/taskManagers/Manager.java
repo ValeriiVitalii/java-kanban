@@ -2,6 +2,7 @@ package taskManagers;
 
 import history.HistoryManager;
 import history.InMemoryHistoryManager;
+import saveCsv.FileBackedTasksManager;
 
 public interface Manager {
 
@@ -13,6 +14,9 @@ public interface Manager {
         return new InMemoryHistoryManager();
     }
 
+    public static FileBackedTasksManager getDefaultHistoryFileBackedTasks() {
+        return new FileBackedTasksManager();
+    }
 
 }
 
