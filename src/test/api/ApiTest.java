@@ -258,46 +258,6 @@ public class ApiTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
     }
-
-    @Test
-    void getPriorityTest() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        URI uri = URI.create("http://localhost:8080/tasks/task");
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(uri)
-                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(taskTest)))
-                .build();
-        client.send(request, HttpResponse.BodyHandlers.ofString());
-        uri = URI.create("http://localhost:8080/tasks/task");
-        request = HttpRequest.newBuilder()
-                .uri(uri)
-                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(taskTest2)))
-                .build();
-        client.send(request, HttpResponse.BodyHandlers.ofString());
-        httpTaskManager.add(taskTest);
-        httpTaskManager.add(taskTest2);
-
-        //---------------------------------------------------------------------
-
-        URI url = URI.create("http://localhost:8080/tasks/priority");
-        HttpRequest request1 = HttpRequest.newBuilder()
-                .uri(url)
-                .GET()
-                .build();
-        try {
-            HttpResponse<String> response = client.send(request1, HttpResponse.BodyHandlers.ofString());
-            String json = response.body();
-            Type type = new TypeToken<List<Task>>(){}.getType();
-
-            List<Task> expectedPrioritizedList = new ArrayList<>(httpTaskManager.getPrioritizedTasks());
-            List<Task> prioritizedList = expectedPrioritizedList;
-            assertEquals(prioritizedList, expectedPrioritizedList);
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
-                    "Проверьте, пожалуйста, адрес и повторите попытку.");
-        }
-    }
-
     @Test
     void getAllTasksEpicsSubtasksTest() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -344,6 +304,44 @@ public class ApiTest {
         }
     }
 
+    @Test
+    void getPriorityTest() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        URI uri = URI.create("http://localhost:8080/tasks/task");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri)
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(taskTest)))
+                .build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        uri = URI.create("http://localhost:8080/tasks/task");
+        request = HttpRequest.newBuilder()
+                .uri(uri)
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(taskTest2)))
+                .build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        httpTaskManager.add(taskTest);
+        httpTaskManager.add(taskTest2);
+
+        //---------------------------------------------------------------------
+
+        URI url = URI.create("http://localhost:8080/tasks/priority");
+        HttpRequest request1 = HttpRequest.newBuilder()
+                .uri(url)
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = client.send(request1, HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+            Type type = new TypeToken<List<Task>>(){}.getType();
+
+            List<Task> expectedPrioritizedList = new ArrayList<>(httpTaskManager.getPrioritizedTasks());
+            List<Task> prioritizedList = expectedPrioritizedList;
+            assertEquals(prioritizedList, expectedPrioritizedList);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
+                    "Проверьте, пожалуйста, адрес и повторите попытку.");
+        }
+    }
     @Test
     void deleteTaskByIdTest() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();

@@ -83,12 +83,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static String historyToString(HistoryManager manager)  {
-        String id = "";
+        String idTask = "";
         ArrayList<Task> tasks = manager.getHistory();
         for (Task task : tasks) {
-            id = id + String.valueOf(task.getId()) + ",";
+            idTask = idTask + String.valueOf(task.getId()) + ",";
         }
-        return id;
+        return idTask;
     }
 
     public static String historyToString()  {
